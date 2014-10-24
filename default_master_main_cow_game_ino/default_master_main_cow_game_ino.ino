@@ -46,8 +46,8 @@ int p2score = 0;
 boolean running = false;
 
 // Game start
-int gamestart = 0;
-int minutes = 300;
+long gamestart = 0;
+long minutes = 300;
 
 
 
@@ -83,7 +83,7 @@ void startGame() {
 }
 
 void endGame() {
-    for(int16_t inf = 0; inf <= 20; inf++) {
+    for(int16_t inf = 0; inf <= 10; inf++) {
         if(inf % 2 == 0){
             matrix.print(10000, DEC);
             matrix.writeDisplay();
@@ -102,15 +102,15 @@ void loop() {
 
     int read = analogRead(buttonPin);
     int reading = getButton(read);
-    
-    Serial.println(minutes);
-
+ 
     if (minutes <= 0) {
-        endGame();
+        endGame();  
     }
 
-    if (millis() - gamestart >= 1000) {
+    if (millis() - gamestart >= 1000) {  
+        //Serial.println(gamestart);
         gamestart = millis();
+        //Serial.println(millis());
         displayTime();
         minutes--;
     }

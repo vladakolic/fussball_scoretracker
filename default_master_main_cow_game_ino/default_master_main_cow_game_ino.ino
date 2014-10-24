@@ -102,12 +102,15 @@ void loop() {
 
     int read = analogRead(buttonPin);
     int reading = getButton(read);
+    
+    Serial.println(minutes);
 
     if (minutes <= 0) {
         endGame();
     }
 
-    if (gamestart - millis() >= 1000) {
+    if (millis() - gamestart >= 1000) {
+        gamestart = millis();
         displayTime();
         minutes--;
     }

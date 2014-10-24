@@ -47,7 +47,6 @@ void setup()
 
 void loop()
 {
-
     int read = analogRead(buttonPin);
     int reading = getButton(read);
 

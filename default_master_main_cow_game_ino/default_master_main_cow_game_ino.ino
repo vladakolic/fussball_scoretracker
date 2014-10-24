@@ -2,7 +2,7 @@
 #include "Adafruit_LEDBackpack.h"
 #include "Adafruit_GFX.h"
 
-Adafruit_7segment matrix = Adafruit_7segment();
+Adafruit_7segment gameClock = Adafruit_7segment();
 
 const int buttonPin = A0;
 
@@ -56,11 +56,11 @@ long minutes = 300;
 void setup()
 {
     pinMode(buttonPin, INPUT);
-    matrix.begin(0x70);
+    gameClock.begin(0x70);
 
     // try to print a number thats too long
-    matrix.print(10000, DEC);
-    matrix.writeDisplay();
+    gameClock.print(10000, DEC);
+    gameClock.writeDisplay();
     delay(500);
 
     Serial.begin(9600);
@@ -69,8 +69,8 @@ void setup()
 }
 
 void displayTime() {
-    matrix.println(minutes);
-    matrix.writeDisplay();
+    gameClock.println(minutes);
+    gameClock.writeDisplay();
 
     if(minutes % 100 == 0){
         minutes -= 40;
@@ -85,13 +85,13 @@ void startGame() {
 void endGame() {
     for(int16_t inf = 0; inf <= 10; inf++) {
         if(inf % 2 == 0){
-            matrix.print(10000, DEC);
-            matrix.writeDisplay();
+            gameClock.print(10000, DEC);
+            gameClock.writeDisplay();
             delay(500);
         }
         if(inf % 2 == 1){
-            matrix.println(8888);
-            matrix.writeDisplay();
+            gameClock.println(8888);
+            gameClock.writeDisplay();
             delay(500);
         }
     }

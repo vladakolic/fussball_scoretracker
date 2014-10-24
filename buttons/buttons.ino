@@ -30,10 +30,6 @@ int lastButtonState = LOW;
 long lastDebounceTime = 0;
 long debounceDelay = 50;
 
-// Game specific constanst
-const long GAMETIME = 300000;
-const long currentGameTime = GAMETIME;
-
 // Game specific variables
 int p1score = 0;
 int p2score = 0;
@@ -47,7 +43,6 @@ void setup()
 
 void loop()
 {
-
     int read = analogRead(buttonPin);
     int reading = getButton(read);
 
@@ -73,14 +68,12 @@ void doButtonAction(int buttonState)
         case TIMEBUTTON:
             if (running)
             {
-                // stop clock
-                Serial.println(TIMEBUTTON);
+                Serial.println("Stop clock");
                 running = false;
             }
             else
             {
-                // start clock
-                Serial.println(TIMEBUTTON);
+                Serial.println("Start clock");
                 running = true;
             }
             break;
@@ -103,9 +96,10 @@ void doButtonAction(int buttonState)
             }
             break;
         case RESETBUTTON:
-            // reset time and scores
-            Serial.println(RESETBUTTON);
+            Serial.println("Reset");
             running = false;
+            p2score = 0;
+            p1score = 0;
             break;
         default:
             Serial.println("doing nothing");

@@ -62,7 +62,7 @@ void setup()
 {
   //IR setup 
   pinMode(dtect,OUTPUT);
-  pinMode(sense,INPUT);
+  pinMode(goalOneSensor,INPUT);
   pinMode(buzzpin,OUTPUT);
   digitalWrite(dtect,HIGH);
   
@@ -134,7 +134,8 @@ void loop() {
     }
     
     if(playerOneSensor>=980) {
-      score_goal(++p1score,p2score);
+      //gör alltid mål atm
+      //score_goal(++p1score,p2score);
     }
     
 

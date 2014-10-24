@@ -51,9 +51,22 @@ boolean running = false;
 long gamestart = 0;
 long minutes = 300;
 
+//IR sensor stuff
+int dtect=8;
+
+int goalOneSensor=A1;
+int buzzpin=9;
+
 
 void setup()
 {
+  //IR setup 
+  pinMode(dtect,OUTPUT);
+  pinMode(sense,INPUT);
+  pinMode(buzzpin,OUTPUT);
+  digitalWrite(dtect,HIGH);
+  
+   //rest
     pinMode(buttonPin, INPUT);
     gameClock.begin(0x70);
 
@@ -85,7 +98,7 @@ void startGame() {
 
 void endGame() {
   
-  end_match(p1score > p2score);
+  end_match(p1score > p2score); //p2 wins if draw. YEAH BABY!
   
     for(int16_t inf = 0; inf <= 10; inf++) {
         if(inf % 2 == 0){
@@ -104,6 +117,7 @@ void endGame() {
 
 void loop() {
 
+    int playerOneSensor=analogRead(goalOneSensor);
     int read = analogRead(buttonPin);
     int reading = getButton(read);
  
@@ -118,6 +132,11 @@ void loop() {
         displayTime();
         minutes--;
     }
+    
+    if(playerOneSensor>=980) {
+      score_goal(++p1score,p2score);
+    }
+    
 
     if (reading != lastButtonState) {
         lastDebounceTime = millis();

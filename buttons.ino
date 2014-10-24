@@ -45,7 +45,6 @@ void loop()
     if ((millis() - lastDebounceTime) > debounceDelay)
     {
         doButtonAction(buttonState);
-        Delay(100);
         lastDebounceTime = millis();
     }
     lastButtonState = buttonState;

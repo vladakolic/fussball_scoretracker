@@ -11,19 +11,18 @@ const int P2DEC = 5;
 const int RESETBUTTON = 6;
 
 // Intervals
-const int TIMEBUTTONLOW = 80;
-const int TIMEBUTTONHIGH = 100;
-const int P1INCLOW = 300;
-const int P1INCHIGH = 320;
-const int P1DECLOW = 370;
-const int P1DECHIGH = 390;
-const int P2INCLOW = 115;
-const int P2INCHIGH = 135;
-const int P2DECLOW = 320;
-const int P2DECHIGH = 240;
-const int RESETBUTTONLOW = 230;
-const int RESETBUTTONHIGH = 250;
-
+const int TIMEBUTTONLOW = 933;
+const int TIMEBUTTONHIGH = 953;
+const int P1INCLOW = 350;
+const int P1INCHIGH = 370;
+const int P1DECLOW = 423;
+const int P1DECHIGH = 443;
+const int P2INCLOW = 142;
+const int P2INCHIGH = 162;
+const int P2DECLOW = 262;
+const int P2DECHIGH = 282;
+const int RESETBUTTONLOW = 860;
+const int RESETBUTTONHIGH = 880;
 
 int lastButtonState = LOW;
 boolean running = false;
@@ -39,7 +38,8 @@ void setup()
 
 void loop()
 {
-    int buttonState = getButton(analogRead(buttonPin));
+    int read = analogRead(buttonPin);
+    int buttonState = getButton(read);
 
     if (buttonState != lastButtonState) {
         lastDebounceTime = millis();
@@ -62,14 +62,12 @@ void doButtonAction(int buttonState)
             {
                 // stop clock
                 Serial.println(TIMEBUTTON);
-                Serial.println(running);
                 running = false;
             }
             else
             {
                 // start clock
                 Serial.println(TIMEBUTTON);
-                Serial.println(running);
                 running = true;
             }
             break;

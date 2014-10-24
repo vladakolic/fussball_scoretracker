@@ -1,3 +1,6 @@
+#ifndef SCORE_DISPLAY_
+#define SCORE_DISPLAY_
+
 #include "HT1632.h"
 #include <stdlib.h>
 
@@ -12,28 +15,39 @@
 
 HT1632LEDMatrix matrix = HT1632LEDMatrix(DATA, WR, CS1, CS2);
 
-void setup() {
-  pinMode(13, OUTPUT);
+/*void setup() {
+  pinMode(SOUND_PIN, OUTPUT);
   Serial.begin(9600);
   matrix.begin(HT1632_COMMON_16NMOS);
   matrix.setTextSize(2);    // size 1 == 8 pixels high
   matrix.setTextColor(1);   // 'lit' LEDs
 
   //set_score(1, 1); // kolla om det är tvåsiffrigt
-  start_match();
-  score_goal(1,0);
-  end_match(false);
-}
+  // start_match();
+  // score_goal(1,0);
+  // end_match(false);
+}*/
 
-void loop(){}
+//void loop(){}
+
+void end_match(boolean playerOneWon);
+void countdown();
+void create_explosions();
+void create_explosion(int8_t, int8_t, int8_t, uint8_t);
+void set_score(int scoreX, int scoreY);
+void score_goal(int scoreX, int scoreY);
+void fadeOut();
+void fadeIn();
+void play_tune();
+void make_some_noise();
+void seven_nation_army();
+void playNote(char note, int to_delay);
+void beep (unsigned char speakerPin, int frequencyInHertz, long timeInMilliseconds);
+void start_match();
 
 
 
-void start_match() {
-  create_explosions(); 
-  countdown();
-  set_score(0,0);
-}
+
 
 void end_match(boolean playerOneWon) {
   matrix.setBrightness(15);
@@ -108,6 +122,8 @@ void create_explosion(int8_t x, int8_t y, int8_t max_radius, uint8_t brightness)
 }
 
 void set_score(int scoreX, int scoreY) {
+  
+  Serial.println("set_score called");
   matrix.clearScreen();
   
   matrix.setBrightness(15);
@@ -229,3 +245,16 @@ void beep (unsigned char speakerPin, int frequencyInHertz, long timeInMillisecon
     delayMicroseconds(delayAmount);
   } 	 
 } 
+
+
+void start_match() {
+  pinMode(SOUND_PIN, OUTPUT);
+  matrix.begin(HT1632_COMMON_16NMOS);
+  matrix.setTextSize(2);    // size 1 == 8 pixels high
+  matrix.setTextColor(1);   // 'lit' LEDs
+  create_explosions(); 
+  countdown();
+  set_score(0,0);
+}
+
+#endif

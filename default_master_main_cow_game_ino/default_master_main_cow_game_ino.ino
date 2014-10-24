@@ -1,6 +1,8 @@
 #include <Wire.h>
 #include "Adafruit_LEDBackpack.h"
 #include "Adafruit_GFX.h"
+#include "score_display.h"
+#include "HT1632.h"
 
 Adafruit_7segment gameClock = Adafruit_7segment();
 
@@ -50,9 +52,6 @@ long gamestart = 0;
 long minutes = 300;
 
 
-
-
-
 void setup()
 {
     pinMode(buttonPin, INPUT);
@@ -66,6 +65,8 @@ void setup()
     Serial.begin(9600);
 
     gamestart = millis();
+
+    start_match();
 }
 
 void displayTime() {
@@ -152,21 +153,26 @@ void doButtonAction(int buttonState)
             break;
         case P1INC:
             p1score++;
+            Serial.println("inc score");
+            set_score(p1score, p2score);
             break;
         case P1DEC:
             if (p1score > 0)
             {
                 p1score--;
             }
+            set_score(p1score, p2score);
             break;
         case P2INC:
-            p1score++;
+            p2score++;
+            set_score(p1score, p2score);
             break;
         case P2DEC:
             if (p2score > 0)
             {
                 p2score--;
             }
+            set_score(p1score, p2score);
             break;
         case RESETBUTTON:
             endGame();

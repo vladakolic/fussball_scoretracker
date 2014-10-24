@@ -1,6 +1,4 @@
-
 const int buttonPin = A0;
-
 
 // Buttons
 const int TIMEBUTTON = 1;
@@ -24,11 +22,22 @@ const int P2DECHIGH = 282;
 const int RESETBUTTONLOW = 860;
 const int RESETBUTTONHIGH = 880;
 
+// Button state variables
+int buttonState;
 int lastButtonState = LOW;
-boolean running = false;
 
+// Debouncing
 long lastDebounceTime = 0;
 long debounceDelay = 50;
+
+// Game specific constanst
+const long GAMETIME = 300000;
+const long currentGameTime = GAMETIME;
+
+// Game specific variables
+int p1score = 0;
+int p2score = 0;
+boolean running = false;
 
 void setup()
 {
@@ -38,19 +47,23 @@ void setup()
 
 void loop()
 {
-    int read = analogRead(buttonPin);
-    int buttonState = getButton(read);
 
-    if (buttonState != lastButtonState) {
+    int read = analogRead(buttonPin);
+    int reading = getButton(read);
+
+    if (reading != lastButtonState) {
         lastDebounceTime = millis();
     }
 
     if ((millis() - lastDebounceTime) > debounceDelay)
     {
-        doButtonAction(buttonState);
-        lastDebounceTime = millis();
+        if (reading != buttonState)
+        {
+            buttonState = reading;
+            doButtonAction(buttonState);
+        }
     }
-    lastButtonState = buttonState;
+    lastButtonState = reading;
 }
 
 void doButtonAction(int buttonState)
@@ -72,20 +85,22 @@ void doButtonAction(int buttonState)
             }
             break;
         case P1INC:
-            // inc p1 score
-            Serial.println(P1INC);
+            p1score++;
             break;
         case P1DEC:
-            // dec p1 score
-            Serial.println(P1DEC);
+            if (p1score > 0)
+            {
+                p1score--;
+            }
             break;
         case P2INC:
-            // inc p2 score
-            Serial.println(P2INC);
+            p1score++;
             break;
         case P2DEC:
-            // dec p2 score
-            Serial.println(P2DEC);
+            if (p2score > 0)
+            {
+                p2score--;
+            }
             break;
         case RESETBUTTON:
             // reset time and scores

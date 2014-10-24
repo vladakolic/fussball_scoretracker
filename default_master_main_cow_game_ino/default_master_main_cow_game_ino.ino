@@ -84,6 +84,9 @@ void startGame() {
 }
 
 void endGame() {
+  
+  end_match(p1score > p2score);
+  
     for(int16_t inf = 0; inf <= 10; inf++) {
         if(inf % 2 == 0){
             gameClock.print(10000, DEC);

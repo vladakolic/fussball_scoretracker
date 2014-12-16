@@ -1,13 +1,11 @@
 #include <Wire.h>
 #include "Adafruit_LEDBackpack.h"
 #include "Adafruit_GFX.h"
-#include "score_display.h"
-#include "HT1632.h"
 
-Adafruit_7segment gameClock = Adafruit_7segment();
+Adafruit_7segment matrix = Adafruit_7segment();
 
 const int buttonPin = A0;
-
+  
 // Buttons
 const int TIMEBUTTON = 1;
 const int P1INC = 2;
@@ -48,43 +46,32 @@ int p2score = 0;
 boolean running = false;
 
 // Game start
-long gamestart = 0;
-long minutes = 300;
+unsigned long gamestart = 0;
+int minutes = 300;
 
-//IR sensor stuff
-int dtect=8;
 
-int goalOneSensor=A1;
-int buzzpin=9;
+
 
 
 void setup()
 {
-  //IR setup 
-  pinMode(dtect,OUTPUT);
-  pinMode(goalOneSensor,INPUT);
-  pinMode(buzzpin,OUTPUT);
-  digitalWrite(dtect,HIGH);
-  
-   //rest
+    Serial.begin(9600);
+    Serial.println("Setup");
     pinMode(buttonPin, INPUT);
-    gameClock.begin(0x70);
+    matrix.begin(0x70);
 
     // try to print a number thats too long
-    gameClock.print(10000, DEC);
-    gameClock.writeDisplay();
+    matrix.print(10000, DEC);
+    matrix.writeDisplay();
     delay(500);
 
-    Serial.begin(9600);
-
     gamestart = millis();
-
-    start_match();
+    Serial.println("Yoo, let do this");
 }
 
 void displayTime() {
-    gameClock.println(minutes);
-    gameClock.writeDisplay();
+    matrix.println(minutes);
+    matrix.writeDisplay();
 
     if(minutes % 100 == 0){
         minutes -= 40;
@@ -97,18 +84,15 @@ void startGame() {
 }
 
 void endGame() {
-  
-  end_match(p1score > p2score); //p2 wins if draw. YEAH BABY!
-  
-    for(int16_t inf = 0; inf <= 10; inf++) {
+    for(int16_t inf = 0; inf <= 20; inf++) {
         if(inf % 2 == 0){
-            gameClock.print(10000, DEC);
-            gameClock.writeDisplay();
+            matrix.print(10000, DEC);
+            matrix.writeDisplay();
             delay(500);
         }
         if(inf % 2 == 1){
-            gameClock.println(8888);
-            gameClock.writeDisplay();
+            matrix.println(8888);
+            matrix.writeDisplay();
             delay(500);
         }
     }
@@ -117,27 +101,24 @@ void endGame() {
 
 void loop() {
 
-    int playerOneSensor=analogRead(goalOneSensor);
     int read = analogRead(buttonPin);
     int reading = getButton(read);
- 
+
     if (minutes <= 0) {
-        endGame();  
+        endGame();
     }
 
-    if (millis() - gamestart >= 1000) {  
-        //Serial.println(gamestart);
+    if (millis() - gamestart >= 1000) {
+        Serial.println("========");
+        Serial.println(millis());
+        Serial.println(gamestart);
+        Serial.println(millis() - gamestart >= 1000);
+        Serial.println(minutes);
+        
         gamestart = millis();
-        //Serial.println(millis());
         displayTime();
         minutes--;
     }
-    
-    if(playerOneSensor>=980) {
-      //gör alltid mål atm
-      //score_goal(++p1score,p2score);
-    }
-    
 
     if (reading != lastButtonState) {
         lastDebounceTime = millis();
@@ -176,26 +157,21 @@ void doButtonAction(int buttonState)
             break;
         case P1INC:
             p1score++;
-            Serial.println("inc score");
-            set_score(p1score, p2score);
             break;
         case P1DEC:
             if (p1score > 0)
             {
                 p1score--;
             }
-            set_score(p1score, p2score);
             break;
         case P2INC:
-            p2score++;
-            set_score(p1score, p2score);
+            p1score++;
             break;
         case P2DEC:
             if (p2score > 0)
             {
                 p2score--;
             }
-            set_score(p1score, p2score);
             break;
         case RESETBUTTON:
             endGame();

@@ -58,8 +58,8 @@ int minutes = 300;
 
 int goalOneSensor=A1;
 int goalTwoSensor=A2;
-int goalOneThreshold = 900
-int goalTwoThreshold = 900
+int goalOneThreshold = 900;
+int goalTwoThreshold = 900;
 
 
 

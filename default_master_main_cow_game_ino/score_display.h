@@ -184,8 +184,8 @@ void fadeIn() {
 }
 
 void play_tune() {
-  int numMelodies = 1;
-
+  int numMelodies = 15;
+  
   switch(rand() % numMelodies) {
     case 0: seven_nation_army();
   }
